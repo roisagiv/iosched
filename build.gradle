@@ -20,7 +20,17 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+    // Temporary workaround for bug: https://code.google.com/p/android-test-kit/issues/detail?id=136
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:22.1.0', 'com.google.code.findbugs:jsr305:2.0.1'
+    }
+}

@@ -30,9 +30,11 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
+    /*signingConfigs {
         debug {
             storeFile file("../android/debug.keystore")
             storePassword "android"
@@ -45,17 +47,17 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
-    }
+    }*/
 
     buildTypes {
         debug {
             debuggable true
-            signingConfig signingConfigs.debug
+//            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
     }
 
@@ -65,6 +67,14 @@ android {
 
     aaptOptions {
         noCompress 'apk'
+    }
+
+    // Required if using com.android.support.test:testing-support-lib
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'LICENSE'
+        exclude 'NOTICE'
+        exclude 'asm-license.txt'
     }
 }
 
@@ -98,4 +108,19 @@ dependencies {
        they should be removed. */
     compile 'com.google.http-client:google-http-client-gson:1.+'
     compile 'com.google.apis:google-api-services-drive:+'
+
+    androidTestCompile 'com.android.support.test:runner:0.2'
+    // Set this dependency to use JUnit 4 rules
+    androidTestCompile 'com.android.support.test:rules:0.2'
+    // Set this dependency to build and run Espresso tests
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
+
+    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+    // The newest version that will work on Android
+    androidTestCompile 'org.mockito:mockito-core:1.9.5'
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.robolectric:robolectric:3.0-rc2"
+    testCompile 'org.mockito:mockito-core:1.9.5'
 }

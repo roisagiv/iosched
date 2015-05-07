@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 
 /**
  * A ContentObserver that bundles multiple consecutive changes in a short time period into one.
@@ -29,18 +30,26 @@ import android.os.Handler;
  */
 public class ThrottledContentObserver extends ContentObserver {
     Handler mMyHandler;
+    protected static final int THROTTLE_DELAY = 1000;
     Runnable mScheduledRun = null;
-    private static final int THROTTLE_DELAY = 1000;
     Callbacks mCallback = null;
 
     public interface Callbacks {
-        public void onThrottledContentObserverFired();
+        void onThrottledContentObserverFired();
     }
 
     public ThrottledContentObserver(Callbacks callback) {
+        this(callback, Looper.myLooper());
+    }
+
+    public ThrottledContentObserver(Callbacks callback, Looper looper) {
         super(null);
-        mMyHandler = new Handler();
+        mMyHandler = createHandler(looper);
         mCallback = callback;
+    }
+
+    protected Handler createHandler(Looper looper) {
+        return new Handler(looper);
     }
 
     @Override
